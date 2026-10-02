@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Full-Stack Developer Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Three.js for 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+        
+        :root {
+            --milk-white: #FDFBF7;
+            --creamy-white: #F5EFEB;
+            --light-chocolate: #D9C3B0;
+            --rich-chocolate: #4A2C11;
+            --deep-chocolate: #261405;
+            --golden-glow: #D4AF37;
+            --bright-gold: #FFDF00;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--milk-white);
+            color: var(--deep-chocolate);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background: linear-gradient(135deg, #FDFBF7 0%, #F5EFEB 50%, #EADCC9 100%);
+        }
+
+        .glass-card {
+            background: rgba(253, 251, 247, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(74, 44, 17, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(74, 44, 17, 0.04);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--golden-glow);
+            box-shadow: 0 12px 40px 0 rgba(212, 175, 55, 0.15);
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(135deg, var(--rich-chocolate) 0%, var(--golden-glow) 50%, var(--rich-chocolate) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--rich-chocolate) 0%, #5c3715 100%);
+            color: var(--milk-white);
+            border: 1px solid var(--golden-glow);
+            box-shadow: 0 4px 15px rgba(74, 44, 17, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, var(--golden-glow) 0%, #b3922e 100%);
+            color: var(--deep-chocolate);
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Active Navigation Link styling */
+        .nav-link {
+            position: relative;
+            color: var(--rich-chocolate);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--golden-glow);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Embedded Website Live Iframe Wrapper */
+        .live-browser {
+            border-top: 30px solid var(--rich-chocolate);
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(74, 44, 17, 0.25);
+        }
+        .live-browser::before {
+            content: '•••';
+            position: absolute;
+            top: -26px;
+            left: 15px;
+            color: var(--light-chocolate);
+            font-size: 20px;
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Scene Background -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-amber-900/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-tight text-amber-900">
+                ATISAM<span class="text-amber-500">.DEV</span>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#live-work" class="nav-link">Live Proof Work</a>
+                <a href="#contact" class="nav-link">Let's Talk</a>
+            </nav>
+            <a href="#contact" class="btn-gold px-5 py-2 rounded-full text-sm font-semibold">Hire Me</a>
+        </div>
+    </header>
+
+    <!-- Home Hero Section -->
+    <section id="home" class="min-h-screen flex items-center px-6 pt-12">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center w-full">
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 bg-amber-900/5 border border-amber-900/10 px-4 py-1.5 rounded-full text-sm font-medium text-amber-900">
+                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Open to Full-Stack Roles
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold text-amber-950 leading-tight">
+                    Crafting <span class="text-gradient-gold">Ultra Modern</span> Digital Masterpieces
+                </h1>
+                <p class="text-lg text-amber-900/80 max-w-xl leading-relaxed">
+                    Hey! I'm a passionate **Web, App & Full-Stack Developer**. I combine clean architectural code with high-end premium aesthetics to launch applications that look stunning and scale infinitely.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="#live-work" class="btn-gold px-8 py-3.5 rounded-full text-base font-medium">View Live Website Proof</a>
+                    <a href="#about" class="bg-amber-900/5 hover:bg-amber-900/10 text-amber-950 border border-amber-900/20 px-8 py-3.5 rounded-full text-base font-medium transition-all">Explore Skills</a>
+                </div>
+            </div>
+            
+            <!-- Quick Profile Teaser Card -->
+            <div class="glass-card p-8 rounded-3xl border-l-4 border-l-amber-500 space-y-6">
+                <div class="flex justify-between items-start">
+                    <div class="space-y-1">
+                        <h3 class="text-2xl font-bold text-amber-950">Atisam</h3>
+                        <p class="text-sm font-semibold text-amber-600">Full-Stack Engineer</p>
+                    </div>
+                    <div class="h-12 w-12 rounded-2xl bg-amber-900/10 flex items-center justify-center text-amber-700 text-xl font-bold">
+                       A
+                    </div>
+                </div>
+                <div class="border-t border-amber-900/10 pt-4 space-y-3">
+                    <div class="flex justify-between text-sm"><span class="text-amber-900/60">Specialty</span><span class="font-medium text-amber-950">Web & Mobile Apps</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-amber-900/60">Experience Vibe</span><span class="font-medium text-amber-950">Realistic, Smooth & Pro</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-amber-900/60">Tech Core</span><span class="font-medium text-amber-600">NodeJS / React / Android Customization</span></div>
+                </div>
+                <div class="bg-amber-950 p-4 rounded-xl text-center text-amber-100 text-xs tracking-wide">
+                    ⚡ CURRENT PROJECT RUNNING ON CLOUD LIVE BELOW!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="py-24 px-6 bg-gradient-to-b from-transparent to-amber-50/40">
+        <div class="max-w-7xl mx-auto space-y-16">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-amber-950">About My Professional Journey</h2>
+                <div class="w-24 h-1 bg-amber-500 mx-auto rounded-full"></div>
+                <p class="text-amber-900/70">Building custom experiences from structural system design up to sleek user interaction animations.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-2xl space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 text-xl"><i class="fa-solid fa-code"></i></div>
+                    <h3 class="text-xl font-bold text-amber-950">Clean Code Architecture</h3>
+                    <p class="text-sm text-amber-900/70 leading-relaxed">Developing robust backend workflows, secure RESTful APIs, and efficient database architectures that run flawlessly under heavy traffic.</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 text-xl"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                    <h3 class="text-xl font-bold text-amber-950">App Ecosystems</h3>
+                    <p class="text-sm text-amber-900/70 leading-relaxed">Cross-platform and custom Android operating level builds tailored for maximum optimization, seamless fluid design, and real-time execution.</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800 text-xl"><i class="fa-solid fa-cubes"></i></div>
+                    <h3 class="text-xl font-bold text-amber-950">3D Interactive Layouts</h3>
+                    <p class="text-sm text-amber-900/70 leading-relaxed">Integrating premium mathematical 3D rendering engines to keep corporate landing interfaces interactive, responsive, and highly friendly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / What I Do Section -->
+    <section id="services" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-amber-950">Every Essential Element From a Full-Stack Developer</h2>
+                <p class="text-amber-900/80 leading-relaxed">
+                    A true developer portfolio demonstrates full-stack command over UI, backend systems, database logic, and hosting integration. Here is exactly what I deliver to the table:
+                </p>
+                <div class="space-y-4">
+                    <div class="flex gap-4 items-start">
+                        <div class="text-amber-600 mt-1"><i class="fa-solid fa-circle-check"></i></div>
+                        <div>
+                            <h4 class="font-bold text-amber-950 text-base">Frontend & UI/UX Perfection</h4>
+                            <p class="text-xs text-amber-900/60">Pixel-perfect premium themes using modern components and custom font balancing.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="text-amber-600 mt-1"><i class="fa-solid fa-circle-check"></i></div>
+                        <div>
+                            <h4 class="font-bold text-amber-950 text-base">Secure CRUD & Cloud Backend</h4>
+                            <p class="text-xs text-amber-900/60">Fully operational database storage operations, active user dashboards, and authentication mechanisms.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div class="text-amber-600 mt-1"><i class="fa-solid fa-circle-check"></i></div>
+                        <div>
+                            <h4 class="font-bold text-amber-950 text-base">Search Console & Domain Verified</h4>
+                            <p class="text-xs text-amber-900/60">Configured to be indexing friendly with fully verified live domain integration mapping.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-amber-950 rounded-3xl p-8 text-white space-y-6 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-48 h-48 bg-amber-500/10 rounded-full blur-2xl"></div>
+                <h3 class="text-2xl font-bold text-amber-300">Technical Skill Matrix</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1"><span>Web Engineering (React, HTML5, Tailwind CSS)</span><span>95%</span></div>
+                        <div class="w-full bg-amber-900/40 h-1.5 rounded-full"><div class="bg-amber-400 h-1.5 rounded-full" style="width: 95%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1"><span>Backend Systems & APIs (Node.js, CRUD Engines)</span><span>90%</span></div>
+                        <div class="w-full bg-amber-900/40 h-1.5 rounded-full"><div class="bg-amber-400 h-1.5 rounded-full" style="width: 90%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1"><span>App Development Frameworks</span><span>85%</span></div>
+                        <div class="w-full bg-amber-900/40 h-1.5 rounded-full"><div class="bg-amber-400 h-1.5 rounded-full" style="width: 85%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1"><span>3D Interactive Graphics Integration (Three.js)</span><span>80%</span></div>
+                        <div class="w-full bg-amber-900/40 h-1.5 rounded-full"><div class="bg-amber-400 h-1.5 rounded-full" style="width: 80%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIVE PROOF WORK (EMBEDDED WEBSITE) SECTION -->
+    <section id="live-work" class="py-24 px-6 bg-amber-50/50 border-y border-amber-900/5">
+        <div class="max-w-7xl mx-auto space-y-12">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-amber-600">Ultimate Developer Proof</span>
+                <h2 class="text-4xl font-bold text-amber-950">Live Integrated Work Showcase</h2>
+                <div class="w-16 h-1 bg-amber-500 mx-auto rounded-full mt-2"></div>
+                <p class="text-sm text-amber-900/70">
+                    Kisi bhi standard static portfolio se behtar, ye section is baat ka **zinda suboot** hai ke ye custom live deployment isi developer ne build ki hai aur operate ki hai!
+                </p>
+            </div>
+
+            <!-- Interactive Live App Frame Wrapper -->
+            <div class="space-y-4">
+                <div class="flex flex-wrap justify-between items-center gap-4 bg-white p-4 rounded-xl border border-amber-900/10 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-amber-100 p-2 rounded-lg text-amber-800"><i class="fa-solid fa-globe"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm text-amber-950">Biyas Collection Live Platform</h4>
+                            <p class="text-xs text-amber-900/60">Fully customized client e-commerce storefront system</p>
+                        </div>
+                    </div>
+                    <a href="https://biyascollection.kesug.com" target="_blank" class="bg-amber-950 hover:bg-amber-900 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                        Launch Live Site <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <div class="live-browser">
+                    <!-- Dynamic Live View Iframe of User's Actual Hosted Development Website Project -->
+                    <iframe src="https://biyascollection.kesug.com" title="Live Developer Project Proof" class="w-full h-[600px] bg-white rounded-b-xl border-none"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Friendly Interactive Contact Form Section -->
+    <section id="contact" class="py-24 px-6">
+        <div class="max-w-3xl mx-auto glass-card p-10 md:p-14 rounded-3xl space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl md:text-4xl font-bold text-amber-950">Let's Create Something Epic!</h2>
+                <p class="text-sm text-amber-900/70">Have a system design challenge or a custom project in mind? Drop a message!</p>
+            </div>
+
+            <form class="space-y-6" onsubmit="event.preventDefault(); alert('Message successfully logged into the portfolio infrastructure simulations!');">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold uppercase text-amber-900/60 tracking-wider">Your Friendly Name</label>
+                        <input type="text" placeholder="Alex" class="w-full p-4 rounded-xl bg-white border border-amber-900/10 focus:outline-none focus:border-amber-500 transition-colors text-sm" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold uppercase text-amber-900/60 tracking-wider">Email Address</label>
+                        <input type="email" placeholder="alex@company.com" class="w-full p-4 rounded-xl bg-white border border-amber-900/10 focus:outline-none focus:border-amber-500 transition-colors text-sm" required>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase text-amber-900/60 tracking-wider">Project Vibe / Message</label>
+                    <textarea rows="4" placeholder="Tell me about your amazing application ideas..." class="w-full p-4 rounded-xl bg-white border border-amber-900/10 focus:outline-none focus:border-amber-500 transition-colors text-sm" required></textarea>
+                </div>
+                <button type="submit" class="btn-gold w-full py-4 rounded-xl font-bold uppercase tracking-wider text-xs">Send Message Over Secure Core</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 text-center text-xs text-amber-900/50 border-t border-amber-900/5">
+        <p>© 2026 ATISAM.DEV. Handcrafted with premium milk-chocolate vibe & Three.js architectures.</p>
+    </footer>
+
+    <!-- Three.js Interactive Premium Engine Logic Script -->
+    <script>
+        let scene, camera, renderer, crystalMesh, particleSystem;
+
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            
+            // Create Scene & Camera
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 8;
+
+            // Renderer Setup
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // Add Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight1 = new THREE.DirectionalLight(0xD4AF37, 1.5); // Golden light
+            directionalLight1.position.set(5, 5, 5);
+            scene.add(directionalLight1);
+
+            const directionalLight2 = new THREE.DirectionalLight(0x4A2C11, 1.2); // Chocolate core accent
+            directionalLight2.position.set(-5, -5, 3);
+            scene.add(directionalLight2);
+
+            // Create Centered Attractive 3D Crystal Shape (Realistic TorusKnot)
+            const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 120, 16);
+            const material = new THREE.MeshStandardMaterial({
+                color: 0x4A2C11, // Rich dark chocolate core
+                roughness: 0.1,
+                metalness: 0.9,
+                wireframe: false,
+                flatShading: true
+            });
+            crystalMesh = new THREE.Mesh(geometry, material);
+            scene.add(crystalMesh);
+
+            // Create Luxury Floating Golden Particles System
+            const particleCount = 250;
+            const particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+
+            for(let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 15; // X axis layout
+                positions[i+1] = (Math.random() - 0.5) * 15; // Y axis layout
+                positions[i+2] = (Math.random() - 0.5) * 10; // Z axis layout
+            }
+
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            // Custom procedural golden dot particle material textures
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0xD4AF37, // Bright Gold
+                size: 0.08,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.AdditiveBlending
+            });
+
+            particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particleSystem);
+
+            // Handle Resize
+            window.addEventListener('resize', onWindowResize, false);
+            // Handle Interactive Mouse Movement acceleration
+            window.addEventListener('mousemove', onMouseMove, false);
+        }
+
+        let mouseX = 0, mouseY = 0;
+        function onMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.0003;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.0003;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smoothly rotate the central core 3D object
+            if (crystalMesh) {
+                crystalMesh.rotation.x += 0.005 + mouseY;
+                crystalMesh.rotation.y += 0.005 + mouseX;
+            }
+
+            // Gently rotate the entire particle matrix cloud background
+            if (particleSystem) {
+                particleSystem.rotation.y += 0.001;
+                particleSystem.rotation.x += 0.0005;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Initialize engine instantly on runtime load
+        init3D();
+        animate();
+    </script>
+</body>
+</html>
